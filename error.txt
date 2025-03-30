@@ -1,1 +1,168 @@
-Attention.__init__() got an unexpected keyword argument 'norm_layer'Attention.__init__() got an unexpected keyword argument 'norm_layer'Attention.__init__() got an unexpected keyword argument 'norm_layer'Attention.__init__() got an unexpected keyword argument 'norm_layer'name 'to_2tuple' is not definedname 'to_2tuple' is not definedname 'to_2tuple' is not definedname 'to_2tuple' is not definedname 'get_init_weights_vit' is not definedname 'get_init_weights_vit' is not definedname 'get_init_weights_vit' is not definedname 'get_init_weights_vit' is not definedtoo many values to unpack (expected 4)too many values to unpack (expected 4)too many values to unpack (expected 4)too many values to unpack (expected 4)
+Attention.__init__() got an unexpected keyword argument 'norm_layer'Attention.__init__() got an unexpected keyword argument 'norm_layer'Attention.__init__() got an unexpected keyword argument 'norm_layer'Attention.__init__() got an unexpected keyword argument 'norm_layer'name 'to_2tuple' is not definedname 'to_2tuple' is not definedname 'to_2tuple' is not definedname 'to_2tuple' is not definedname 'get_init_weights_vit' is not definedname 'get_init_weights_vit' is not definedname 'get_init_weights_vit' is not definedname 'get_init_weights_vit' is not definedtoo many values to unpack (expected 4)too many values to unpack (expected 4)too many values to unpack (expected 4)too many values to unpack (expected 4)Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
+Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
+Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
+Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
+Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
+Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
+Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
+Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/worker.py", line 308, in _worker_loop
+    data = fetcher.fetch(index)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torch/utils/data/_utils/fetch.py", line 51, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+            ~~~~~~~~~~~~^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/datasets/folder.py", line 231, in __getitem__
+    sample = self.transform(sample)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 95, in __call__
+    img = t(img)
+          ^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/transforms.py", line 137, in __call__
+    return F.to_tensor(pic)
+           ^^^^^^^^^^^^^^^^
+  File "/root/rach/.sftmoe/lib/python3.12/site-packages/torchvision/transforms/functional.py", line 167, in to_tensor
+    img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Numpy is not available
