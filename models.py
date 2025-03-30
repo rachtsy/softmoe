@@ -79,6 +79,21 @@ def soft_moe_vit_tiny(pretrained=False,
     )
     return model
 
+@register_model
+def soft_graph_moe_vit_tiny(pretrained=False,
+    num_experts=128, slots_per_expert=1, moe_layer_index=6, **kwargs):
+    from softmax import Soft_GRPAH_MoEVisionTransformer
+    model = Soft_GRPAH_MoEVisionTransformer(
+        num_experts=num_experts,
+        slots_per_expert=slots_per_expert,
+        moe_layer_index=moe_layer_index,
+        embed_dim=192,
+        depth=12,
+        num_heads=3,
+        **kwargs,
+    )
+    return model
+
 # def soft_moe_vit_small(
 #     num_experts=128, slots_per_expert=1, moe_layer_index=6, **kwargs
 # ) -> SoftMoEVisionTransformer:

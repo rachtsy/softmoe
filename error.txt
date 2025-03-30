@@ -166,3 +166,4 @@ Original Traceback (most recent call last):
     img = torch.from_numpy(np.array(pic, mode_to_nptype.get(pic.mode, np.uint8), copy=True))
           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 RuntimeError: Numpy is not available
+The size of tensor a (128) must match the size of tensor b (192) at non-singleton dimension 0The size of tensor a (128) must match the size of tensor b (192) at non-singleton dimension 0The size of tensor a (128) must match the size of tensor b (192) at non-singleton dimension 0The size of tensor a (128) must match the size of tensor b (192) at non-singleton dimension 0Loss is nan, stopping trainingLoss is nan, stopping trainingLoss is nan, stopping trainingLoss is nan, stopping trainingLoss is nan, stopping trainingLoss is nan, stopping trainingLoss is nan, stopping trainingLoss is nan, stopping training

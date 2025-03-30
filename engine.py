@@ -37,7 +37,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
     for i, (samples, targets) in enumerate(metric_logger.log_every(data_loader, print_freq, header)):
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
-        # if i == 50:
+        # if i == 30:
         #     break
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
@@ -108,7 +108,6 @@ def evaluate(data_loader, model, device, attn_only=False, batch_limit=0 ,epoch=0
     for i, (images, target) in enumerate(metric_logger.log_every(data_loader, 10, header)):
         images = images.to(device, non_blocking=True)
         target = target.to(device, non_blocking=True)
-
 
         with torch.cuda.amp.autocast():
             if attn_only:

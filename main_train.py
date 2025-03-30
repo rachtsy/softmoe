@@ -28,6 +28,7 @@ from datasets import build_dataset
 from engine import train_one_epoch, evaluate
 from losses import DistillationLoss
 from samplers import RASampler
+from softmoe import Soft_GRAPH_MoELayerWrapper
 import models
 import utils
 import wandb
@@ -177,6 +178,7 @@ def get_args_parser():
     
     # Wandb API key
     parser.add_argument('--API_Key', default='', help='API key for wandb')
+    parser.add_argument('--jobname', default='', help='API key for wandb')
 
     return parser
 
@@ -406,7 +408,7 @@ def main(args):
     
     # track hyperparameters and run metadata
     config=args)
-    wandb.run.name = "Baseline"
+    wandb.run.name = args.jobname
 
     print(f"Start training for {args.epochs} epochs from {args.start_epoch}")
     start_time = time.time()
@@ -422,6 +424,10 @@ def main(args):
             set_training_mode=args.finetune == '', # keep in eval mode during finetuning
             architecture=args.model
         )
+
+        for name, m in model.named_modules():
+            if isinstance(m, Soft_GRAPH_MoELayerWrapper):
+                m.update_adj()
 
         lr_scheduler.step(epoch)
 
@@ -464,13 +470,4 @@ if __name__ == '__main__':
     if args.output_dir:
         Path(args.output_dir).mkdir(parents=True, exist_ok=True)
     os.environ["WANDB_API_KEY"]=args.API_Key
-    try:
-        main(args)
-    except Exception as Argument:
-        print("error")
-     # creating/opening a file
-        f = open("error.txt", "a")
-        # writing in the file
-        f.write(str(Argument))
-        # closing the file
-        f.close() 
+    main(args)
