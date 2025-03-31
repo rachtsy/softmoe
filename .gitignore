@@ -39,3 +39,4 @@ Thumbs.db
 _pycache_
 wandb/
 ckpts/
+.*

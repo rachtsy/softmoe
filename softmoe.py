@@ -10,7 +10,7 @@ import pdb
 
 def normalized_adj(adj):
     # caculate the degree of each node, fill 0 with 1 to avoid divide by zero
-    degree = torch.sum(adj, dim=2)
+    degree = torch.sum(adj, dim=1)
     degree[degree < 1e-5] = 1
     return torch.bmm(torch.bmm(torch.diag_embed(torch.pow(degree, -0.5)), adj), torch.diag_embed(torch.pow(degree, -0.5)))
 
@@ -228,6 +228,138 @@ class Soft_GRAPH_MoELayerWrapper(nn.Module):
         # Compute dispatch and combine weights
         logits = torch.einsum("bmd,dnp->bmnp", x, phi)
         d = softmax(logits, dim=1)
+        c = softmax(logits, dim=(2, 3))
+
+        # Compute input slots as weighted average of input tokens using dispatch weights
+        xs = torch.einsum("bmd,bmnp->bnpd", x, d)
+
+        # Apply expert to corresponding slots
+        ys = torch.stack(
+            [f_i(xs[:, i, :, :]) for i, f_i in enumerate(self.experts)], dim=1
+        )
+
+        # Compute output tokens as weighted average of output slots using combine weights
+        y = torch.einsum("bnpd,bmnp->bmd", ys, c)
+
+        return y
+
+class Soft_GRAPH_threshold_MoELayerWrapper(nn.Module):
+    """
+    A wrapper class to create a Soft Mixture of Experts layer.
+
+    From "From Sparse to Soft Mixtures of Experts"
+    https://arxiv.org/pdf/2308.00951.pdf
+    """
+
+    def __init__(
+        self,
+        dim: int,
+        num_experts: int,
+        slots_per_expert: int,
+        layer: Callable,
+        beta: float, 
+        alpha: float, 
+        t: float,
+        normalize: bool = True,
+        **layer_kwargs,
+    ) -> None:
+        """
+        Args:
+            dim (int): Dimensionality of input features.
+            num_experts (int): Number of experts.
+            slots_per_expert (int): Number of token slots per expert.
+            layer (Callable): Network layer of the experts.
+            normalize (bool): Normalize input and phi (sec. 2.3 from paper)
+            **layer_kwargs: Additional keyword arguments for the layer class.
+        """
+        super().__init__()
+
+        self.dim = dim
+        self.num_experts = num_experts
+        self.slots_per_expert = slots_per_expert
+        self.normalize = normalize
+
+        # Initialize phi and normalization scaling factor
+        self.phi = nn.Parameter(torch.zeros(dim, num_experts, slots_per_expert))
+
+        self.register_buffer('adj', torch.zeros((slots_per_expert*self.num_experts,slots_per_expert*self.num_experts)))
+        self.register_buffer('new_adj', torch.zeros((slots_per_expert*self.num_experts,slots_per_expert*self.num_experts)))
+        self.adj_norm = normalized_adj
+        self.beta = beta
+        self.alpha = alpha
+        self.t = t
+        self.warm_up_over = False
+
+        if self.normalize:
+            self.scale = nn.Parameter(torch.ones(1))
+
+        # Initialize phi using LeCun normal initialization
+        # https://github.com/google-research/vmoe/blob/662341d007650d5bbb7c6a2bef7f3c759a20cc7e/vmoe/projects/soft_moe/router.py#L49C1-L49C1
+        nn.init.normal_(self.phi, mean=0, std=1 / dim**0.5)
+
+        # Create a list of expert networks
+        self.experts = nn.ModuleList(
+            [layer(**layer_kwargs) for _ in range(num_experts)]
+        )
+
+    def update_adj(self):
+        """Method to update the adjacency matrix, will be called at the end of each epoch
+        """
+        # first time update adj matrix
+        print(">>>>>>>>>> updating adj <<<<<<<<<<<<")
+        if self.adj.sum() <= 1e-3:
+            self.adj = self.adj_norm(self.new_adj)
+        else:
+            self.adj = self.beta * self.adj + (1-self.beta) * self.adj_norm(self.new_adj)
+        print(self.adj)
+        self.new_adj.zero_()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Forward pass through the Soft-MoE layer (algorithm 1 from paper).
+
+        Args:
+            x (torch.Tensor): Input tensor of shape [batch_size, seq_len, input_dim].
+
+        Returns:
+            torch.Tensor: Output tensor of shape [batch_size, seq_len, input_dim].
+        """
+        assert (
+            x.shape[-1] == self.dim
+        ), f"Input feature dim of {x.shape[-1]} does not match layer dim of {self.dim}"
+        assert (
+            len(x.shape) == 3
+        ), f"Input expected to have 3 dimensions but has {len(x.shape)}"
+
+        phi = self.phi
+
+        # Normalize input and phi
+        if self.normalize:
+            x = F.normalize(x, dim=2)  # [b, m, d]
+            phi = self.scale * F.normalize(phi, dim=0)  # [d, n, p]
+
+        # Compute dispatch and combine weights
+        logits = torch.einsum("bmd,dnp->bmnp", x, phi)
+        # this is [b, m, n, p]
+        d = softmax(logits, dim=1)
+        b, m, n, p = d.shape
+
+        if self.training:
+            with torch.no_grad():
+                d_ = d.reshape(b, m, n*p)
+                # [b, np, np]
+                batch_adj = torch.abs(F.cosine_similarity(d_, d_))
+                batch_adj[batch_adj >= self.t] = 1
+                batch_adj[batch_adj < self.t] = 0
+                self.new_adj += batch_adj.sum(dim=0)
+
+        if not self.adj.sum() <= 1e-3 and self.warm_up_over:
+            # [p, n, n]
+            full_adj = self.alpha * torch.eye(self.num_experts*self.slots_per_expert, device=self.phi.device) + (1-self.alpha) * self.adj
+            # [p, d, n]
+            d = d.reshape(b, m, n*p)r
+            d = torch.bmm(d, full_adj).reshape(b, m, n, p)
+
         c = softmax(logits, dim=(2, 3))
 
         # Compute input slots as weighted average of input tokens using dispatch weights

@@ -24,7 +24,7 @@ import torch.utils.checkpoint
 from timm.layers import PatchDropout, PatchEmbed, trunc_normal_
 from timm.models._manipulate import checkpoint_seq, named_apply
 from softmoe import Block, Mlp
-from softmoe import SoftMoELayerWrapper, Soft_GRAPH_MoELayerWrapper
+from softmoe import SoftMoELayerWrapper, Soft_GRAPH_MoELayerWrapper, Soft_GRAPH_threshold_MoELayerWrapper
 
 
  
@@ -618,7 +618,8 @@ class Soft_GRPAH_MoEVisionTransformer(nn.Module):
         pretrained_cfg=None,
         pretrained_cfg_overlay=None,
         alpha=0.9,
-        beta=0.9
+        beta=0.9,
+        t=0.5,
     ):
         """
         Args:
@@ -656,6 +657,7 @@ class Soft_GRPAH_MoEVisionTransformer(nn.Module):
             mlp_layer (Callable): MLP layer.
         """
         super().__init__()
+        print( f">>>>>>>> init sftmoe graph vit with alpha {alpha}, beta {beta}, t {t} <<<<<<<<")
         assert global_pool in ("", "avg", "token")
         assert class_token or global_pool != "token"
         use_fc_norm = global_pool == "avg" if fc_norm is None else fc_norm
@@ -700,15 +702,27 @@ class Soft_GRPAH_MoEVisionTransformer(nn.Module):
         self.num_experts = num_experts
         self.slots_per_expert = slots_per_expert
 
-        moe_mlp_layer = partial(
-            Soft_GRAPH_MoELayerWrapper,
-            layer=mlp_layer,
-            dim=embed_dim,
-            num_experts=self.num_experts,
-            slots_per_expert=self.slots_per_expert,
-            alpha=alpha,
-            beta=beta,
-        )
+        if t > 0: 
+            moe_mlp_layer = partial(
+                Soft_GRAPH_threshold_MoELayerWrapper,
+                layer=mlp_layer,
+                dim=embed_dim,
+                num_experts=self.num_experts,
+                slots_per_expert=self.slots_per_expert,
+                alpha=alpha,
+                beta=beta,
+                t=t,
+            )
+        else:
+            moe_mlp_layer = partial(
+                Soft_GRAPH_MoELayerWrapper,
+                layer=mlp_layer,
+                dim=embed_dim,
+                num_experts=self.num_experts,
+                slots_per_expert=self.slots_per_expert,
+                alpha=alpha,
+                beta=beta,
+            )
 
         # Create a list where each index is the mlp layer class to
         # use at that depth

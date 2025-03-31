@@ -181,6 +181,12 @@ def get_args_parser():
     parser.add_argument('--jobname', default='', help='API key for wandb')
     parser.add_argument('--warmupover', default=5, type=int,
                         help='warm up for adj')
+    parser.add_argument('--alpha', default=0.9, type=float,
+                        help='for graph')
+    parser.add_argument('--beta', default=0.9, type=float,
+                        help='for graph')
+    parser.add_argument('--t', default=0.5, type=float,
+                        help='threshold for graph')
 
     return parser
 
@@ -274,6 +280,9 @@ def main(args):
         drop_rate=args.drop,
         drop_path_rate=args.drop_path,
         drop_block_rate=None,
+        alpha=args.alpha,
+        beta=args.beta,
+        t=args.t,
     )
 
     if args.finetune:
