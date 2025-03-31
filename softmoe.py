@@ -164,6 +164,7 @@ class Soft_GRAPH_MoELayerWrapper(nn.Module):
         self.adj_norm = normalized_adj
         self.beta = beta
         self.alpha = alpha
+        self.warm_up_over = False
 
         if self.normalize:
             self.scale = nn.Parameter(torch.ones(1))
@@ -219,10 +220,10 @@ class Soft_GRAPH_MoELayerWrapper(nn.Module):
                 self.new_adj += torch.bmm(phi.permute(2, 1, 0), phi.permute(2, 0, 1))
 
 
-        if not self.adj.sum() <= 1e-3:
+        if not self.adj.sum() <= 1e-3 and self.warm_up_over:
             full_adj = self.alpha * torch.eye(self.num_experts, device=self.phi.device).unsqueeze(0) + (1-self.alpha) * self.adj
             # [p, d, n]
-            phi = torch.bmm(phi.permute(2, 0, 1), full_adj).permute(1, 2, 0)
+            phi = torch.bmm(phi.permute(2, 0, 1), torch.transpose(full_adj, -1, -2)).permute(1, 2, 0)
 
         # Compute dispatch and combine weights
         logits = torch.einsum("bmd,dnp->bmnp", x, phi)

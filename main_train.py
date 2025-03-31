@@ -179,6 +179,8 @@ def get_args_parser():
     # Wandb API key
     parser.add_argument('--API_Key', default='', help='API key for wandb')
     parser.add_argument('--jobname', default='', help='API key for wandb')
+    parser.add_argument('--warmupover', default=5, type=int,
+                        help='warm up for adj')
 
     return parser
 
@@ -428,6 +430,8 @@ def main(args):
         for name, m in model.named_modules():
             if isinstance(m, Soft_GRAPH_MoELayerWrapper):
                 m.update_adj()
+                if epoch == args.warmupover:
+                    m.warm_up_over = True
 
         lr_scheduler.step(epoch)
 
