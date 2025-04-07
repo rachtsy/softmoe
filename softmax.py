@@ -342,6 +342,7 @@ class SoftMoEVisionTransformer(nn.Module):
         mlp_layer: Callable = Mlp,
         pretrained_cfg=None,
         pretrained_cfg_overlay=None,
+        **kwargs,
     ):
         """
         Args:

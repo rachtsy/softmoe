@@ -357,7 +357,7 @@ class Soft_GRAPH_threshold_MoELayerWrapper(nn.Module):
             # [p, n, n]
             full_adj = self.alpha * torch.eye(self.num_experts*self.slots_per_expert, device=self.phi.device) + (1-self.alpha) * self.adj
             # [p, d, n]
-            d = d.reshape(b, m, n*p)r
+            d = d.reshape(b, m, n*p)
             d = torch.bmm(d, full_adj).reshape(b, m, n, p)
 
         c = softmax(logits, dim=(2, 3))
